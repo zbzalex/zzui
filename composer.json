@@ -1,0 +1,33 @@
+{
+    "name": "hzn4/miru",
+    "autoload": {
+        "psr-4": {
+            "": [
+                "lib/",
+                "src/"
+            ]
+        }
+    },
+    "autoload-dev": {
+        "psr-4" : {
+            "Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "zbzalex",
+            "email": "sasha.broslavskiy@gmail.com"
+        }
+    ],
+    "require": {
+        "jms/parser-lib": "^1.1@dev",
+        "phpmailer/phpmailer": "dev-master",
+        "firebase/php-jwt": "^6.0"
+    },
+    "minimum-stability": "dev",
+    "config": {
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true
+        }
+    }
+}
