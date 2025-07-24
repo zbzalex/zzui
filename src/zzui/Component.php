@@ -95,10 +95,11 @@ abstract class Component
     // echo sprintf("%s::renderComponent()\n", get_class($this));
   }
 
+  /**
+   * @return \zzui\markup\MarkupStream
+   */
   public function findMarkupStream()
   {
-    // echo sprintf("%s::findMarkupStream()\n", get_class($this));
-
     return $this->parent->findMarkupStream();
   }
 }

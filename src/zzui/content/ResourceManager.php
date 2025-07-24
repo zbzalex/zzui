@@ -9,19 +9,19 @@ namespace zzui\content;
  */
 class ResourceManager
 {
-    protected $loaders;
+  protected $loaders;
 
-    public function __construct(array $loaders = [])
-    {
-        $this->loaders = $loaders;
-    }
+  public function __construct(array $loaders = [])
+  {
+    $this->loaders = $loaders;
+  }
 
-    public function load($resource)
-    {
-        foreach ($this->loaders as $loader) {
-            if ($loader->supports($resource)) {
-                return $loader->load($resource);
-            }
-        }
+  public function load($resource)
+  {
+    foreach ($this->loaders as $loader) {
+      if ($loader->supports($resource)) {
+        return $loader->load($resource);
+      }
     }
+  }
 }

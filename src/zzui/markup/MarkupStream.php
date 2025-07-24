@@ -27,6 +27,9 @@ class MarkupStream
     return $this->currentIndex < $this->markup->size();
   }
 
+  /**
+   * @return \zzui\markup\MarkupElement|null
+   */
   public function next()
   {
     if (++$this->currentIndex < $this->markup->size()) {
@@ -37,6 +40,9 @@ class MarkupStream
     return null;
   }
 
+  /**
+   * @return \zzui\markup\MarkupElement|null
+   */
   public function get()
   {
     return $this->current;

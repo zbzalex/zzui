@@ -7,13 +7,13 @@ namespace zzui\content\loader;
  */
 interface Loader
 {
-    /**
-     * Check resource support
-     */
-    public function supports($resource);
+  /**
+   * Check resource support
+   */
+  public function supports($resource);
 
-    /**
-     * Load an resource.
-     */
-    public function load($resource);
+  /**
+   * Load an resource.
+   */
+  public function load($resource);
 }

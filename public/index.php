@@ -15,16 +15,3 @@ $app = new MyApplication(new ResourceManager([
 ]));
 
 \zzui\zzui::run($app);
-
-
-// $parser = new \zzui\markup\MarkupParser();
-// $result = $parser->parseMarkup(
-//   "<html><head><title>test</title></head><body>
-  
-//   <children />
-  
-//   </body>
-//   </html>"
-// );
-
-// var_dump($result);

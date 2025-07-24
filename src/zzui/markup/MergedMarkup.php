@@ -12,13 +12,13 @@ class MergedMarkup extends Markup
     $childrenIndex = -1;
     $el = $baseMarkupStream->get();
     while ($baseMarkupStream->hasMore()) {
-      
+
       if ($el instanceof ComponentTag) {
 
         $componentTag = $el;
 
         if ($componentTag->isChildren()) {
-          
+
           $childrenIndex = $baseMarkupStream->getCurrentIndex();
 
           $baseMarkupStream->next();
@@ -55,7 +55,7 @@ class MergedMarkup extends Markup
     $el = $baseMarkupStream->get();
 
     while ($baseMarkupStream->hasMore()) {
-      
+
       $this->addMarkupElement($el);
       $el = $baseMarkupStream->next();
     }

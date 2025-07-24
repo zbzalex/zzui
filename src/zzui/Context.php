@@ -49,6 +49,8 @@ class Context
    */
   protected $authorizationStrategy;
 
+  protected $routes = [];
+
   /**
    * Constructor.
    */
@@ -142,5 +144,49 @@ class Context
   public function setAuthorizationStrategy(AuthorizationStrategy $strategy)
   {
     $this->authorizationStrategy = $strategy;
+  }
+
+  public function mount($path, $pageClass)
+  {
+    $this->routes[] = [
+      'path'      => $path,
+      'pageClass' => $pageClass,
+    ];
+  }
+
+  public function match($uri)
+  {
+    for (
+      $i = 0, $ii = count($this->routes);
+      $i < $ii;
+      $i++
+    ) {
+
+      $route = $this->routes[$i];
+
+      if (preg_match($route['path'], $uri)) {
+        return $route['pageClass'];
+      }
+    }
+
+    return null;
+  }
+
+  public function getPagePath($pageClass)
+  {
+    for (
+      $i = 0, $ii = count($this->routes);
+      $i < $ii;
+      $i++
+    ) {
+
+      $route = $this->routes[$i];
+
+      if ($route['pageClass'] === $pageClass) {
+        return $route['path'];
+      }
+    }
+
+    return null;
   }
 }

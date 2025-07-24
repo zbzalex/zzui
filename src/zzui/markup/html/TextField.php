@@ -29,8 +29,11 @@ class TextField extends FormComponentImpl
   public function handleRender(Context $app)
   {
     $markupStream = $this->findMarkupStream();
+
     $tag = $markupStream->get();
+
     $markupStream->next();
+
     $app->getResponse()->write($tag->__toString());
   }
 }

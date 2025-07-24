@@ -14,6 +14,7 @@ class Form extends MarkupContainer implements FormListener
    * Form submit handler.
    */
   private $onSubmitHandler;
+
   private $onValidationErrorsHandler;
 
   /**

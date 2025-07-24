@@ -38,5 +38,11 @@ class MyApplication extends \zzui\Application
     $this->setAuthorizationStrategy(new DefaultAuthorizationStrategy());
 
     $filterChain->addFilter(new PassportFilter($this));
+
+    $this->mount(
+      '/^\/forgotPassword/i',
+      '\AwesomeProject\ui\pages\ForgotPasswordPage'
+    );
+
   }
 }
