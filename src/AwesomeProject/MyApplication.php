@@ -13,6 +13,11 @@ use zzui\http\HttpResponse;
 
 class MyApplication extends \zzui\Application
 {
+  public function getSecretKey()
+  {
+    return 'my-secret-key';
+  }
+
   public function getHomePage()
   {
     return HomePage::class;
@@ -20,7 +25,7 @@ class MyApplication extends \zzui\Application
 
   public function getUrlCoder()
   {
-    return new CryptedUrlCoder();
+    return new CryptedUrlCoder($this->getSecretKey());
   }
 
   public function getJwtKey()
