@@ -4,22 +4,41 @@ namespace zzui\markup;
 
 class Markup
 {
+  /**
+   * @var MarkupElement[]
+   */
   public $elements;
 
+  /**
+   * @param MarkupElement[] $elements
+   */
   public function __construct(array $elements = [])
   {
     $this->elements = $elements;
   }
 
+  /**
+   * @return int
+   */
   public function size()
   {
     return count($this->elements);
   }
 
+  /**
+   * @param int $index
+   * @return MarkupElement
+   * @throws \Exception
+   */
   public function get($index)
   {
     if ($index < 0 || count($this->elements) - 1 < $index) {
-      throw new \Exception("Out of bound array");
+      throw new \Exception(
+        sprintf(
+          "Out of array bounds: %d",
+          $index
+        )
+      );
     }
 
     return $this->elements[$index];
@@ -32,11 +51,11 @@ class Markup
 
   public function __toString()
   {
-    $output = "";
+    $output = [];
     foreach ($this->elements as $el) {
-      $output .= $el instanceof ComponentTag ? $el->text : $el->__toString();
+      $output[] = $el instanceof ComponentTag ? $el->text : $el->__toString();
     }
 
-    return $output;
+    return implode("", $output);
   }
 }

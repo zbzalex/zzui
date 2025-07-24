@@ -9,14 +9,17 @@ class MergedMarkup extends Markup
     $markupStream = new MarkupStream($markup);
     $baseMarkupStream = new MarkupStream($baseMarkup);
 
-    $childIndex = -1;
+    $childrenIndex = -1;
     $el = $baseMarkupStream->get();
     while ($baseMarkupStream->hasMore()) {
+      
       if ($el instanceof ComponentTag) {
+
         $componentTag = $el;
 
-        if ($componentTag->id === 'child') {
-          $childIndex = $baseMarkupStream->getCurrentIndex();
+        if ($componentTag->isChildren()) {
+          
+          $childrenIndex = $baseMarkupStream->getCurrentIndex();
 
           $baseMarkupStream->next();
 
@@ -38,18 +41,21 @@ class MergedMarkup extends Markup
       $el = $baseMarkupStream->next();
     }
 
-    if ($childIndex === -1) {
-      throw new \Exception('tag id: "child" was not found');
+    if ($childrenIndex === -1) {
+      throw new \Exception('tag "children" was not found');
     }
 
     $el = $markupStream->get();
+
     while ($markupStream->hasMore()) {
       $this->addMarkupElement($el);
       $el = $markupStream->next();
     }
 
     $el = $baseMarkupStream->get();
+
     while ($baseMarkupStream->hasMore()) {
+      
       $this->addMarkupElement($el);
       $el = $baseMarkupStream->next();
     }

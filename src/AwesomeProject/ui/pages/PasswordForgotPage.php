@@ -1,6 +1,6 @@
 <?php
 
-namespace miru\presentation\pages;
+namespace AwesomeProject\ui\pages;
 
 use zzui\markup\html\Page;
 

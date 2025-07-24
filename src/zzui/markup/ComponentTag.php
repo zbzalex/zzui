@@ -56,7 +56,7 @@ class ComponentTag extends MarkupElement
   {
     return $this->type === 'open_close';
   }
-  
+
   public function __toString()
   {
     $output = [];
@@ -70,5 +70,10 @@ class ComponentTag extends MarkupElement
     } else if ($this->isClose()) {
       return sprintf("</%s>", $this->name);
     }
+  }
+
+  public function isChildren()
+  {
+    return $this->name === 'children';
   }
 }

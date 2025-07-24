@@ -55,7 +55,7 @@ class MarkupContainer extends Component
   {
     return $this->markupStream;
   }
-  
+
   public function setMarkupStream(MarkupStream $markupStream)
   {
     $this->markupStream = $markupStream;
@@ -126,10 +126,10 @@ class MarkupContainer extends Component
       $component->render($app);
     } else {
 
-      // echo "raw markup\n";
-
       $app->getResponse()->write($el->__toString());
+
       $markupStream->next();
+      
     }
   }
 }

@@ -13,4 +13,9 @@ abstract class MarkupElement
   {
     return false;
   }
+
+  public function __toString()
+  {
+    return "";
+  }
 }

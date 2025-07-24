@@ -2,7 +2,7 @@
 
 namespace zzui\http;
 
-class Response
+class HttpResponse
 {
   protected $status;
   protected $headers;

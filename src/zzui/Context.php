@@ -3,8 +3,8 @@
 namespace zzui;
 
 use zzui\content\ResourceManager;
-use zzui\http\Request;
-use zzui\http\Response;
+use zzui\http\HttpRequest;
+use zzui\http\HttpResponse;
 use zzui\markup\html\Page;
 
 /**
@@ -14,133 +14,133 @@ use zzui\markup\html\Page;
  */
 class Context
 {
-    /**
-     * @var \zzui\content\ResourceManager
-     */
-    protected $resourceManager;
+  /**
+   * @var \zzui\content\ResourceManager
+   */
+  protected $resourceManager;
 
-    /**
-     * @var \zzui\http\Request
-     */
-    protected $request;
+  /**
+   * @var \zzui\http\HttpRequest
+   */
+  protected $request;
 
-    /**
-     * @var \zzui\RequestTarget
-     */
-    protected $requestTarget;
+  /**
+   * @var \zzui\RequestTarget
+   */
+  protected $requestTarget;
 
-    /**
-     * @var \zzui\http\Response
-     */
-    protected $response;
+  /**
+   * @var \zzui\http\HttpResponse
+   */
+  protected $response;
 
-    /**
-     * @var array|Page
-     */
-    protected $responsePage;
+  /**
+   * @var array|Page
+   */
+  protected $responsePage;
 
-    /**
-     * @var boolean
-     */
-    protected $redirect;
+  /**
+   * @var boolean
+   */
+  protected $redirect;
 
-    /**
-     * @var \zzui\AuthorizationStrategy
-     */
-    protected $authorizationStrategy;
+  /**
+   * @var \zzui\AuthorizationStrategy
+   */
+  protected $authorizationStrategy;
 
-    /**
-     * Constructor.
-     */
-    public function __construct(ResourceManager $resourceManager)
-    {
-        $this->resourceManager = $resourceManager;
-        $this->response = new Response();
-    }
+  /**
+   * Constructor.
+   */
+  public function __construct(ResourceManager $resourceManager)
+  {
+    $this->resourceManager = $resourceManager;
+    $this->response = new HttpResponse();
+  }
 
-    public function getResourceManager()
-    {
-        return $this->resourceManager;
-    }
+  public function getResourceManager()
+  {
+    return $this->resourceManager;
+  }
 
-    public function setRequest(Request $request)
-    {
-        $this->request = $request;
-    }
+  public function setRequest(HttpRequest $request)
+  {
+    $this->request = $request;
+  }
 
-    public function getRequest()
-    {
-        return $this->request;
-    }
+  public function getRequest()
+  {
+    return $this->request;
+  }
 
-    public function setRequestTarget($target)
-    {
-        $this->requestTarget = $target;
-    }
+  public function setRequestTarget($target)
+  {
+    $this->requestTarget = $target;
+  }
 
-    public function getRequestTarget()
-    {
-        return $this->requestTarget;
-    }
+  public function getRequestTarget()
+  {
+    return $this->requestTarget;
+  }
 
-    public function setResponse(Response $response)
-    {
-        $this->response = $response;
-    }
+  public function setResponse(HttpResponse $response)
+  {
+    $this->response = $response;
+  }
 
-    /**
-     * @return \zzui\http\Response
-     */
-    public function getResponse()
-    {
-        return $this->response;
-    }
+  /**
+   * @return \zzui\http\Response
+   */
+  public function getResponse()
+  {
+    return $this->response;
+  }
 
-    public function setRedirect($redirect)
-    {
-        $this->redirect = $redirect;
-    }
+  public function setRedirect($redirect)
+  {
+    $this->redirect = $redirect;
+  }
 
-    public function isRedirect()
-    {
-        return $this->redirect;
-    }
+  public function isRedirect()
+  {
+    return $this->redirect;
+  }
 
-    public function setResponsePage($responsePage)
-    {
-        $this->responsePage = $responsePage;
-    }
+  public function setResponsePage($responsePage)
+  {
+    $this->responsePage = $responsePage;
+  }
 
-    public function getResponsePage()
-    {
-        return $this->responsePage;
-    }
+  public function getResponsePage()
+  {
+    return $this->responsePage;
+  }
 
-    /**
-     * Page factory class.
-     * 
-     * @see \zzui\PageFactory
-     */
-    public function getPageFactory()
-    {
-        return new DefaultPageFactory($this);
-    }
+  /**
+   * Page factory class.
+   * 
+   * @see \zzui\PageFactory
+   */
+  public function getPageFactory()
+  {
+    return new DefaultPageFactory($this);
+  }
 
-    /**
-     * @see \zzui\UrlCoder
-     */
-    public function getUrlCoder()
-    {
-        return new DefaultUrlCoder();
-    }
+  /**
+   * @see \zzui\UrlCoder
+   */
+  public function getUrlCoder()
+  {
+    return new DefaultUrlCoder();
+  }
 
-    public function getAuthorizationStrategy()
-    {
-        return $this->authorizationStrategy;
-    }
+  public function getAuthorizationStrategy()
+  {
+    return $this->authorizationStrategy;
+  }
 
-    public function setAuthorizationStrategy(AuthorizationStrategy $strategy)
-    {
-        $this->authorizationStrategy = $strategy;
-    }
+  public function setAuthorizationStrategy(AuthorizationStrategy $strategy)
+  {
+    $this->authorizationStrategy = $strategy;
+  }
 }

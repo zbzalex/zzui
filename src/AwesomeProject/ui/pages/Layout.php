@@ -1,8 +1,8 @@
 <?php
 
-namespace miru\presentation\pages;
+namespace AwesomeProject\ui\pages;
 
-use miru\presentation\panels\Header;
+use AwesomeProject\ui\panels\Header;
 use zzui\Context;
 use zzui\markup\html\Page;
 

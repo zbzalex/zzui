@@ -1,12 +1,12 @@
 <?php
 
-namespace miru\presentation\filters;
+namespace AwesomeProject\ui\filters;
 
 use zzui\Context;
 use zzui\http\Cookie;
 use zzui\http\Filter;
-use zzui\http\Request;
-use zzui\http\Response;
+use zzui\http\HttpRequest;
+use zzui\http\HttpResponse;
 use zzui\http\FilterChain;
 
 class PassportFilter implements Filter
@@ -21,7 +21,7 @@ class PassportFilter implements Filter
     $this->ctx = $ctx;
   }
 
-  public function doFilter(Request $request, Response $response, FilterChain $chain)
+  public function doFilter(HttpRequest $request, HttpResponse $response, FilterChain $chain)
   {
     /** @var \zzui\http\Cookie[] $cookies */
     $cookies = $request->getCookies();
@@ -35,6 +35,8 @@ class PassportFilter implements Filter
         }
       }
     );
+    
+    $results = array_values($results);
 
     /** @var \zzui\http\Cookie $jwt */
     $jwt = count($results) != 0 ? $results[0] : null;

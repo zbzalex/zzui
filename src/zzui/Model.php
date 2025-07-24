@@ -7,25 +7,25 @@ namespace zzui;
  */
 class Model
 {
-    private $object;
+  private $object;
 
-    public function __construct($object = null)
-    {
-        $this->object = $object;
-    }
+  public function __construct($object = null)
+  {
+    $this->object = $object;
+  }
 
-    public function getObject()
-    {
-        return $this->object;
-    }
+  public function getObject()
+  {
+    return $this->object;
+  }
 
-    public function setObject($object)
-    {
-        $this->object = $object;
-    }
+  public function setObject($object)
+  {
+    $this->object = $object;
+  }
 
-    public static function of($object = null)
-    {
-        return new Model($object);
-    }
+  public static function of($object = null)
+  {
+    return new Model($object);
+  }
 }

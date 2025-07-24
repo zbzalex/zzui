@@ -4,5 +4,7 @@ namespace zzui\http;
 
 interface FilterChain
 {
-  public function doFilter(Request $request, Response $response);
+  public function addFilter(Filter $filter);
+  
+  public function doFilter(HttpRequest $request, HttpResponse $response);
 }

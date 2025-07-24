@@ -4,7 +4,14 @@ namespace zzui\http;
 
 class DefaultFilterChain implements FilterChain
 {
+  /**
+   * @var Filter[]
+   */
   protected $filters;
+
+  /**
+   * @var int
+   */
   protected $index;
 
   public function __construct()
@@ -18,7 +25,7 @@ class DefaultFilterChain implements FilterChain
     $this->filters[] = $filter;
   }
 
-  public function doFilter(Request $request, Response $response)
+  public function doFilter(HttpRequest $request, HttpResponse $response)
   {
     if ($this->index < count($this->filters)) {
       $filter = $this->filters[$this->index++];

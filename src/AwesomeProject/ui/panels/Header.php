@@ -1,6 +1,6 @@
 <?php
 
-namespace miru\presentation\panels;
+namespace AwesomeProject\ui\panels;
 
 use zzui\markup\html\Panel;
 

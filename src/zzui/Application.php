@@ -2,6 +2,10 @@
 
 namespace zzui;
 
+use zzui\http\FilterChain;
+use zzui\http\HttpRequest;
+use zzui\http\HttpResponse;
+
 /**
  * Base application class should be extended.
  * 
@@ -17,4 +21,6 @@ abstract class Application extends Context
    * @see \zzui\markup\html\Page
    */
   public abstract function getHomePage();
+  
+  public abstract function setup(HttpRequest $request, HttpResponse $response, FilterChain $filterChain);
 }

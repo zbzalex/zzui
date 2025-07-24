@@ -2,7 +2,8 @@
 
 namespace zzui\markup\html;
 
-interface FormComponent {
+interface FormComponent
+{
   public function updateModel($value);
 
   /**

@@ -1,8 +1,7 @@
 <?php
 
-namespace miru\presentation\pages;
+namespace AwesomeProject\ui\pages;
 
-use miru\presentation\pages\Layout;
 use zzui\Context;
 use zzui\markup\html\Form;
 use zzui\markup\html\TextField;

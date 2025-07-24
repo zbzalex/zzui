@@ -5,11 +5,9 @@ namespace zzui;
 use zzui\http\HttpRequest;
 
 /**
- * Default url coder.
- * 
  * @author zbzalex
  */
-class DefaultUrlCoder implements UrlCoder
+class CryptedUrlCoder implements UrlCoder
 {
   public function __construct() {}
 
@@ -26,11 +24,11 @@ class DefaultUrlCoder implements UrlCoder
 
       $params = array_merge(
         [
-          '__zzui' => ltrim(str_replace("\\", ".", $requestTarget->getPageClass()), ".")
+          '__zzui' => base64_encode('\\' . ltrim($requestTarget->getPageClass(), '\\')
             . ":"
             . $requestTarget->getComponentId()
             . ":"
-            . ltrim(str_replace("\\", ".", $requestTarget->getListener()), "."),
+            . '\\' . ltrim($requestTarget->getListener(), "\\")),
         ],
         $requestTarget->getParams()
       );
@@ -48,13 +46,13 @@ class DefaultUrlCoder implements UrlCoder
   {
     $query = $request->getQuery();
     if (isset($query['__zzui'])) {
-      $pageQuery  = is_string($query['__zzui']) ? $query['__zzui'] : null;
+      $pageQuery  = is_string($query['__zzui']) ? base64_decode($query['__zzui']) : null;
       $segments   = explode(":", $pageQuery);
       if (count($segments) === 3) {
-        $pageClass      = "\\" . ltrim(str_replace(".", "\\", $segments[0]), "\\");
-        $componentId    = preg_match("/^[0-9a-z]+$/i", $segments[1]) ? $segments[1] : null;
-        $listener       = preg_match("/^[0-9a-z\.]+$/i", $segments[2])
-          ? "\\" . ltrim(str_replace(".", "\\", $segments[2]), "\\")
+        $pageClass      = "\\" . ltrim($segments[0], "\\");
+        $componentId    = preg_match("/^[\\0-9a-z]+$/i", $segments[1]) ? $segments[1] : null;
+        $listener       = preg_match("/.+/i", $segments[2])
+          ? "\\" . ltrim($segments[2], "\\")
           : null;
         
         unset($query['__zzui']);

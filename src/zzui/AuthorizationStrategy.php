@@ -4,5 +4,5 @@ namespace zzui;
 
 interface AuthorizationStrategy
 {
-    public function isInstantiationAuthorized($pageClass, Context $ctx);
+  public function isInstantiationAuthorized($pageClass, Context $ctx);
 }

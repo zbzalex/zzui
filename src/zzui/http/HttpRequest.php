@@ -5,7 +5,7 @@ namespace zzui\http;
 /**
  * @author zbzalex
  */
-class Request
+class HttpRequest
 {
   protected $method;
 
@@ -52,7 +52,7 @@ class Request
       }
     }
 
-    $request = new Request(
+    $request = new HttpRequest(
       $_SERVER['REQUEST_METHOD'],
       $_SERVER['REQUEST_URI'],
       $_GET,

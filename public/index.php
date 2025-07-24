@@ -2,34 +2,29 @@
 
 session_start();
 
-use miru\presentation\authorization\DefaultAuthorizationStrategy;
-use miru\presentation\filters\PassportFilter;
-use miru\WebApplication;
+use AwesomeProject\MyApplication;
 use zzui\content\loader\FileLoader;
 use zzui\content\ResourceManager;
-use zzui\RequestProcessorFilter;
-use zzui\http\DefaultFilterChain;
-use zzui\http\Request;
-use zzui\http\Response;
 
 require_once dirname(__DIR__) . "/vendor/autoload.php";
 
-$app = new WebApplication(new ResourceManager([
+$app = new MyApplication(new ResourceManager([
   new FileLoader([
     dirname(__DIR__) . '/src/',
   ]),
 ]));
 
-$app->setAuthorizationStrategy(new DefaultAuthorizationStrategy());
+\zzui\zzui::run($app);
 
-$request = Request::createFromGlobals();
 
-$response = new Response();
+// $parser = new \zzui\markup\MarkupParser();
+// $result = $parser->parseMarkup(
+//   "<html><head><title>test</title></head><body>
+  
+//   <children />
+  
+//   </body>
+//   </html>"
+// );
 
-$filterChain = new DefaultFilterChain();
-$filterChain->addFilter(new PassportFilter($app));
-$filterChain->addFilter(new RequestProcessorFilter($app));
-
-$filterChain->doFilter($request, $response);
-
-$response->send();
+// var_dump($result);
