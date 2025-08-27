@@ -2,9 +2,6 @@
 
 namespace AwesomeProject;
 
-use Firebase\JWT\Key;
-use AwesomeProject\ui\authorization\DefaultAuthorizationStrategy;
-use AwesomeProject\ui\filters\PassportFilter;
 use AwesomeProject\ui\pages\HomePage;
 use zzui\CryptedUrlCoder;
 use zzui\http\FilterChain;
@@ -28,21 +25,5 @@ class MyApplication extends \zzui\Application
     return new CryptedUrlCoder($this->getSecretKey());
   }
 
-  public function getJwtKey()
-  {
-    return new Key('secret', 'HS256');
-  }
-
-  public function setup(HttpRequest $request, HttpResponse $response, FilterChain $filterChain)
-  {
-    $this->setAuthorizationStrategy(new DefaultAuthorizationStrategy());
-
-    $filterChain->addFilter(new PassportFilter($this));
-
-    $this->mount(
-      '/^\/forgotPassword/i',
-      '\AwesomeProject\ui\pages\ForgotPasswordPage'
-    );
-
-  }
+  public function setup(HttpRequest $request, HttpResponse $response, FilterChain $filterChain) {}
 }

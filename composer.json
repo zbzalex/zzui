@@ -21,8 +21,7 @@
     ],
     "require": {
         "jms/parser-lib": "^1.1@dev",
-        "phpmailer/phpmailer": "dev-master",
-        "firebase/php-jwt": "^6.0"
+        "phpunit/phpunit": "^5.7"
     },
     "minimum-stability": "dev",
     "config": {

@@ -16,10 +16,7 @@ class HomePage extends Layout
     array $params = []
   ) {
     parent::__construct($ctx, $params);
-
-    $user       = $ctx->getRequest()->getSession()->getUser();
-    $isLoggedIn = $user !== null;
-
+    
     $label = new Label("welcomeText", "hello");
     $this->add($label);
 
