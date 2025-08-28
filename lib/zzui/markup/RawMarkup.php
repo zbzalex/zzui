@@ -9,6 +9,8 @@ class RawMarkup extends MarkupElement
 {
   public function __construct($text)
   {
+    parent::__construct();
+
     $this->text = $text;
   }
 

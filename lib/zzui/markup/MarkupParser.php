@@ -8,7 +8,7 @@ class MarkupParser
    * @var string
    */
   protected $input;
-  
+
   /**
    * @var int
    */
@@ -18,7 +18,7 @@ class MarkupParser
    * @var int
    */
   protected $len = 0;
-  
+
   public static $instance = null;
 
   /**
@@ -41,7 +41,7 @@ class MarkupParser
   }
 
   /**
-   * @return \zzui\markup\ComponentTag|null
+   * @return \zzui\markup\MarkupElement|null
    */
   public function nextTag()
   {
@@ -101,11 +101,11 @@ class MarkupParser
   }
 
   /**
-   * @return \zzui\markup\ComponentTag
+   * @return \zzui\markup\MarkupElement
    */
   public function parseTagText($tagText)
   {
-    $tag = new ComponentTag();
+    $tag = new MarkupElement();
 
     preg_match('/^([^\s]+)(.*)$/s', $tagText, $matches);
     if (!$matches) {
@@ -124,7 +124,7 @@ class MarkupParser
       $attributes[$key] = $value;
     }
 
-    $tag->id = isset($attributes['view-id']) ? $attributes['view-id'] : null;
+    // $tag->id = isset($attributes['view-id']) ? $attributes['view-id'] : null;
     $tag->attributes = $attributes;
 
     return $tag;
@@ -138,7 +138,7 @@ class MarkupParser
     /** @var \zzui\markup\MarkupElement[] */
     $elements = [];
 
-    /** @var \zzui\markup\ComponentTag[] */
+    /** @var \zzui\markup\MarkupElement[] */
     $tags = [];
 
     /** @var int $pos */
@@ -147,7 +147,7 @@ class MarkupParser
     /** @var bool $addTag */
     $addTag = false;
 
-    /** @var \zzui\markup\ComponentTag|null $tag */
+    /** @var \zzui\markup\MarkupElement|null $tag */
     $tag = null;
 
     while (
@@ -158,8 +158,7 @@ class MarkupParser
       if ($tag->type === 'open') {
         $tags[] = $tag;
 
-        $addTag = $tag->id !== null;
-
+        $addTag = isset($tag->attributes['view-id']);
       } else if ($tag->type === 'close') {
 
         if (count($tags) === 0) {
@@ -168,7 +167,7 @@ class MarkupParser
           );
         }
 
-        /** @var \zzui\markup\ComponentTag $top */
+        /** @var \zzui\markup\MarkupElement $top */
         $top = array_pop($tags);
 
         $mismatch = $top->name !== $tag->name;
@@ -187,10 +186,10 @@ class MarkupParser
         }
 
         $tag->closes = $top;
-        $addTag = $top->id !== null;
+        $addTag = isset($top->attributes['view-id']);
       } else if ($tag->type === 'open_close') {
         $tag->closes = $tag;
-        $addTag = $tag->id !== null || $tag->name === 'children';
+        $addTag = isset($tag->attributes['view-id']) || $tag->name === 'children';
       }
 
       if ($addTag !== false) {
@@ -217,14 +216,13 @@ class MarkupParser
           "Unknown open tag \"" . $tag . "\""
         );
       }
-
     }
 
     if ($pos < $this->len) {
       $elements[] = new RawMarkup(mb_substr($this->input, $pos, $this->len));
     }
 
-    return $elements;
+    return new Markup($elements);
   }
 
   public static function getInstance()

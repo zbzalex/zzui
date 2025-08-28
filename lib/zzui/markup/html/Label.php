@@ -9,8 +9,15 @@ use zzui\markup\MarkupStream;
 
 class Label extends Component
 {
+  /**
+   * @var string
+   */
   private $value;
 
+  /**
+   * @param string $id
+   * @param string $value
+   */
   public function __construct($id, $value)
   {
     parent::__construct($id);
@@ -41,7 +48,7 @@ class Label extends Component
     $openTag = $markupStream->get();
 
     $markupStream->next();
-    
+
     while ($markupStream->hasMore() && !$markupStream->get()->closes($openTag)) $markupStream->next();
 
     $ctx->getResponse()->write($openTag->__toString());

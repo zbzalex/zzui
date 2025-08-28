@@ -5,7 +5,6 @@ namespace zzui\markup\html;
 use zzui\Context;
 use zzui\markup\Component;
 use zzui\ListenerRequestTarget;
-use zzui\markup\ComponentTag;
 use zzui\markup\MarkupStream;
 
 /**
@@ -34,12 +33,12 @@ class PageLink extends Component
   }
 
   /**
-   * @see \zzui\Component::handleComponentTag()
+   * @see \zzui\markup\Component::handleComponentTag()
    */
-  public function handleComponentTag(Context $app, ComponentTag $tag)
+  public function handleComponentTag(Context $ctx, MarkupElement $tag)
   {
     $target = new ListenerRequestTarget($this->pageClass, null, null, $this->params);
-    $tag->attributes['href'] = $app->getUrlCoder()->encode($target);
+    $tag->attributes['href'] = $ctx->getUrlCoder()->encode($target);
   }
 
   /**

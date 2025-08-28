@@ -6,9 +6,21 @@ use zzui\markup\Component;
 
 abstract class FormComponentImpl extends Component implements FormComponent
 {
+  /**
+   * @var array
+   */
   protected $validators;
+
+  /**
+   * @var mixed
+   */
   protected $value;
 
+  /**
+   * Constructor.
+   * 
+   * @param string $id
+   */
   public function __construct($id)
   {
     parent::__construct($id);

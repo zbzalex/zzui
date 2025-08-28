@@ -3,7 +3,6 @@
 namespace zzui\markup\html;
 
 use zzui\Context;
-use zzui\markup\ComponentTag;
 
 class TextField extends FormComponentImpl
 {
@@ -21,15 +20,15 @@ class TextField extends FormComponentImpl
    * @see \zzui\markup\Component::handleComponentTag()
    * 
    * @param \zzui\Context $ctx
-   * @param \zzui\markup\ComponentTag $tag
+   * @param \zzui\markup\MarkupElement $tag
    */
-  public function handleComponentTag(Context $ctx, ComponentTag $tag)
+  public function handleComponentTag(Context $ctx, MarkupElement $tag)
   {
     $tag->attributes['name']  = $this->id;
     $tag->attributes['value'] = $this->defaultValue;
   }
 
-  public function handleRender(Context $app)
+  public function handleRender(Context $ctx)
   {
     $markupStream = $this->findMarkupStream();
 
@@ -37,6 +36,6 @@ class TextField extends FormComponentImpl
 
     $markupStream->next();
 
-    $app->getResponse()->write($tag->__toString());
+    $ctx->getResponse()->write($tag->__toString());
   }
 }

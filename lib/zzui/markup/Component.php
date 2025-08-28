@@ -3,7 +3,6 @@
 namespace zzui\markup;
 
 use zzui\Context;
-use zzui\markup\ComponentTag;
 use zzui\markup\MarkupStream;
 
 /**
@@ -66,27 +65,24 @@ abstract class Component
     return $this->parent;
   }
 
-  public function handleComponentTag(
-    Context $ctx,
-    ComponentTag $tag
-  ) {
+  public function handleComponentTag(Context $ctx, MarkupElement $tag) {
     // should be implemented
   }
 
-  public function render(Context $app)
+  public function render(Context $ctx)
   {
     // echo sprintf("%s::render()\n", get_class($this));
 
-    $this->handleRender($app);
+    $this->handleRender($ctx);
   }
 
-  public function handleRender(Context $app)
+  public function handleRender(Context $ctx)
   {
     // echo sprintf("%s::handleRender()\n", get_class($this));
 
     $markupStream = $this->findMarkupStream();
 
-    $this->renderComponent($app, $markupStream);
+    $this->renderComponent($ctx, $markupStream);
   }
 
   public function renderComponent(Context $ctx, MarkupStream $markupStream)
@@ -95,10 +91,10 @@ abstract class Component
   }
 
   /**
-   * @return \zzui\markup\MarkupStream
+   * @return \zzui\markup\MarkupStream|null
    */
   public function findMarkupStream()
   {
-    return $this->parent->findMarkupStream();
+    return $this->parent !== null ? $this->parent->findMarkupStream() : null;
   }
 }

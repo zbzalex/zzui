@@ -5,7 +5,7 @@ namespace zzui\markup\html;
 use zzui\markup\Component;
 use zzui\Context;
 use zzui\ListenerRequestTarget;
-use zzui\markup\ComponentTag;
+use zzui\markup\MarkupElement;
 use zzui\markup\MarkupStream;
 
 /**
@@ -33,36 +33,36 @@ class Link extends Component implements LinkListener
   }
 
   /**
-   * @see \zzui\Component::handleComponentTag()
+   * @see \zzui\markup\Component::handleComponentTag()
    */
-  public function handleComponentTag(Context $app, ComponentTag $tag)
+  public function handleComponentTag(Context $ctx, MarkupElement $tag)
   {
     // echo sprintf("%s::handleComponentTag()\n", get_class($this));
 
-    $responsePage = $app->getResponsePage();
+    $responsePage = $ctx->getResponsePage();
 
     $target = new ListenerRequestTarget(
       is_array($responsePage) ? $responsePage[0] : get_class($responsePage),
-      $tag->id,
+      $tag->getId(),
       '\\zzui\\markup\\html\\LinkListener',
       []
     );
-    $tag->attributes['href'] = $app->getUrlCoder()->encode($target);
+    $tag->attributes['href'] = $ctx->getUrlCoder()->encode($target);
   }
 
   /**
-   * @see \zzui\Component::renderComponent()
+   * @see \zzui\markup\Component::renderComponent()
    */
-  public function renderComponent(Context $app, MarkupStream $markupStream)
+  public function renderComponent(Context $ctx, MarkupStream $markupStream)
   {
     $openTag = $markupStream->get();
 
-    $this->handleComponentTag($app, $openTag);
+    $this->handleComponentTag($ctx, $openTag);
 
     $markupStream->next();
 
     // render tag
-    $app->getResponse()->write($openTag->__toString());
+    $ctx->getResponse()->write($openTag->__toString());
 
     $inner = null;
 
@@ -70,13 +70,13 @@ class Link extends Component implements LinkListener
       $markupStream->hasMore()
       && !$markupStream->get()->closes($openTag)
     ) {
-      $this->parent->renderNext($app, $markupStream);
+      $this->parent->renderNext($ctx, $markupStream);
     }
 
-    $app->getResponse()->write($inner);
+    $ctx->getResponse()->write($inner);
 
     // render close tag
-    $app->getResponse()->write($markupStream->get()->__toString());
+    $ctx->getResponse()->write($markupStream->get()->__toString());
     $markupStream->next();
   }
 }

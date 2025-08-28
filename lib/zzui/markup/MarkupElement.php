@@ -7,7 +7,7 @@ namespace zzui\markup;
  * 
  * @author zbzalex
  */
-abstract class MarkupElement
+class MarkupElement
 {
   /**
    * @var string
@@ -18,21 +18,42 @@ abstract class MarkupElement
    * @var string
    */
   public $type;
-  
-  public $attributes;
-  public $closes;
-  public $pos = 0;
-  public $text;
-  public $len = 0;
 
-  public function closes(MarkupElement $open)
+  /**
+   * @var array
+   */
+  public $attributes;
+
+  /**
+   * @var \zzui\markup\MarkupElement|null
+   */
+  public $closes;
+
+  /**
+   * @var int
+   */
+  public $pos = 0;
+
+  /**
+   * @var string|null
+   */
+  public $text = null;
+
+  /**
+   * @var int
+   */
+  public $len = 0;
+  
+  public function __construct() {}
+
+  public function closes(MarkupElement $openTag)
   {
-    return $open->name === $this->name;
+    return $openTag->name == $this->name;
   }
 
   public function closeTag()
   {
-    $tag = new ComponentTag();
+    $tag = new MarkupElement();
     $tag->type = 'close';
     $tag->name = $this->name;
 
@@ -71,6 +92,23 @@ abstract class MarkupElement
 
   public function __toString()
   {
-    return "";
+    $output = [];
+    if ($this->isOpen() || $this->isOpenClose()) {
+      // if (count($this->attributes) > 0) {
+      foreach ($this->attributes as $attr => $value) {
+        $output[] = $value === null
+          ? $attr
+          : sprintf("%s=\"%s\"", $attr, $value);
+      }
+      // }
+      return "<" . $this->name . (count($output) > 0 ? " " . implode(" ", $output) : null) . ($this->isOpenClose() ? "/>" : ">");
+    } else if ($this->isClose()) {
+      return sprintf("</%s>", $this->name);
+    }
+  }
+
+  public function getId()
+  {
+    return isset($this->attributes['view-id']) ? $this->attributes['view-id'] : null;
   }
 }

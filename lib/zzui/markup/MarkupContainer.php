@@ -108,7 +108,8 @@ class MarkupContainer extends Component
   {
     $el = $markupStream->get();
 
-    if ($el instanceof ComponentTag) {
+    if ($el->getId() !== null) {
+
       /** @var \zzui\markup\ComponentTag $componentTag */
       $componentTag = $el;
 
@@ -122,8 +123,11 @@ class MarkupContainer extends Component
       $component->render($ctx);
       
     } else if ($el instanceof RawMarkup) {
+
       $ctx->getResponse()->write($el->__toString());
+
       $markupStream->next();
+      
     }
   }
 }

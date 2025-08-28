@@ -91,10 +91,13 @@ class MarkupStream
     }
   }
 
-  public function skipToMatchCloseTag(ComponentTag $openTag)
+  public function skipToMatchCloseTag(MarkupElement $openTag)
   {
     while ($this->hasMore()) {
-      if ($this->get()->closes($openTag)) {
+
+      $el = $this->get();
+      
+      if ($el->closes($openTag)) {
         break;
       } else {
         $this->next();

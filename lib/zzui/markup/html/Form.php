@@ -72,7 +72,7 @@ class Form extends MarkupContainer implements FormListener
     return $errors;
   }
 
-  public function handleRender(Context $app)
+  public function handleRender(Context $ctx)
   {
     // echo sprintf("%s::handleRender()\n", get_class($this));
 
@@ -80,9 +80,9 @@ class Form extends MarkupContainer implements FormListener
 
     $openTag = $this->markupStream->get();
 
-    $this->handleComponentTag($app, $openTag);
+    $this->handleComponentTag($ctx, $openTag);
 
-    $app->getResponse()->write($openTag->__toString());
+    $ctx->getResponse()->write($openTag->__toString());
     $this->markupStream->next();
 
     while (
@@ -92,27 +92,27 @@ class Form extends MarkupContainer implements FormListener
 
       $index = $this->markupStream->getCurrentIndex();
 
-      $this->renderNext($app, $this->markupStream);
+      $this->renderNext($ctx, $this->markupStream);
 
       if ($index === $this->markupStream->getCurrentIndex()) {
         throw new \Exception();
       }
     }
 
-    $app->getResponse()->write($this->markupStream->get()->__toString());
+    $ctx->getResponse()->write($this->markupStream->get()->__toString());
 
     $this->markupStream->next();
   }
 
   /**
-   * @see \zzui\Component::handleComponentTag()
+   * @see \zzui\markup\Component::handleComponentTag()
    */
-  public function handleComponentTag(Context $app, ComponentTag $tag)
+  public function handleComponentTag(Context $ctx, MarkupElement $tag)
   {
-    $responsePage = $app->getResponsePage();
+    $responsePage = $ctx->getResponsePage();
 
     $tag->attributes['method'] = 'POST';
-    $tag->attributes['action'] = $app->getUrlCoder()->encode(
+    $tag->attributes['action'] = $ctx->getUrlCoder()->encode(
       new ListenerRequestTarget(
         is_array($responsePage) ? $responsePage[0] : get_class($responsePage),
         $tag->id,

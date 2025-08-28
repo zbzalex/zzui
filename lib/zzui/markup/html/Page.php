@@ -3,11 +3,10 @@
 namespace zzui\markup\html;
 
 use zzui\Context;
-use zzui\markup\Markup;
 use zzui\markup\MarkupContainer;
+use zzui\markup\MarkupMerger;
 use zzui\markup\MarkupParser;
 use zzui\markup\MarkupStream;
-use zzui\markup\MergedMarkup;
 
 /**
  * Base page class.
@@ -45,10 +44,8 @@ abstract class Page extends MarkupContainer
     return $this->params;
   }
 
-  public function handleRender(Context $app)
+  public function handleRender(Context $ctx)
   {
-    // echo sprintf("%s::handleRender()\n", get_class($this));
-
     $hierarchy      = [];
     $parentClass    = get_class($this);
     while ($parentClass != Page::class) {
@@ -63,19 +60,17 @@ abstract class Page extends MarkupContainer
       $content = $this->app->getResourceManager()->load($resource);
 
       if ($markup === null) {
-        $markup = new Markup(MarkupParser::parse($content));
+        $markup = MarkupParser::parse($content);
       } else {
-        $baseMarkup = $markup;
-        $markup = new MergedMarkup();
-        $markup->merge(
-          new Markup(MarkupParser::parse($content)),
-          $baseMarkup
+        $markup = MarkupMerger::merge(
+          MarkupParser::parse($content),
+          $markup
         );
       }
     }
 
     $this->markupStream = new MarkupStream($markup);
 
-    $this->renderAll($app, $this->markupStream);
+    $this->renderAll($ctx, $this->markupStream);
   }
 }
