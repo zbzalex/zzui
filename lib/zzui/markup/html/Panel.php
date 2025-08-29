@@ -7,6 +7,7 @@ use zzui\markup\Markup;
 use zzui\markup\MarkupContainer;
 use zzui\markup\MarkupParser;
 use zzui\markup\MarkupStream;
+use zzui\markup\RawMarkup;
 
 /**
  * Panel component.
@@ -17,16 +18,16 @@ abstract class Panel extends MarkupContainer
 {
   public function handleRender(Context $ctx)
   {
-
     // parent markup stream
-    $this->markupStream = $this->findMarkupStream();
-    
-    $openTag = $this->markupStream->get();
-    
+    $parent = $this->findMarkupStream();
+
+    $openTag = $parent->get();
+
     // unset($openTag->attributes['view-id']);
 
-    $this->markupStream->next();
-    $this->markupStream->skipToMatchCloseTag($openTag);
+    $parent->next();
+    $parent->skipToMatchCloseTag($openTag);
+
 
 
 
@@ -35,17 +36,13 @@ abstract class Panel extends MarkupContainer
 
     $html = $ctx->getResourceManager()->load($markupResource);
     $markup = MarkupParser::parse($html);
-    $markupStream = new MarkupStream($markup);
+    $this->markupStream = new MarkupStream($markup);
 
     $ctx->getResponse()->write($openTag->__toString());
 
-    try {
-      // $this->renderAll($ctx, $markupStream);
-    } catch (\Exception $e) {
-    }
-
-    $ctx->getResponse()->write($this->markupStream->get()->__toString());
-    $this->markupStream->next();
-
+    $this->renderAll($ctx, $this->markupStream);
+    
+    $ctx->getResponse()->write($parent->get()->__toString());
+    $parent->next();
   }
 }

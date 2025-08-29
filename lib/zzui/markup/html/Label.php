@@ -4,7 +4,6 @@ namespace zzui\markup\html;
 
 use zzui\markup\Component;
 use zzui\Context;
-use zzui\markup\MarkupElement;
 use zzui\markup\MarkupStream;
 
 /**
@@ -36,14 +35,6 @@ class Label extends Component
   public function getValue()
   {
     return $this->value;
-  }
-
-  /**
-   * @see \zzui\markup\Component::handleComponentTag()
-   */
-  public function handleComponentTag(Context $ctx, MarkupElement $tag)
-  {
-    parent::handleComponentTag($ctx, $tag);
   }
 
   public function renderComponent(Context $ctx, MarkupStream $markupStream)

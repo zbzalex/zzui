@@ -7,7 +7,7 @@ namespace zzui\content;
  * 
  * @author zbzalex
  */
-class ResourceManager
+final class ResourceManager
 {
   protected $loaders;
 

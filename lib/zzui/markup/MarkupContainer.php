@@ -25,7 +25,7 @@ class MarkupContainer extends Component
   /**
    * @param Component $child
    */
-  public function add($child)
+  public function add(Component $child)
   {
     $this->children[] = $child;
     $child->setParent($this);
@@ -38,16 +38,24 @@ class MarkupContainer extends Component
 
   public function removeChild($id)
   {
-    $this->children = array_filter($this->children, function ($child) use ($id) {
-      return $child->getId() !== $id;
-    });
+    $this->children = array_filter(
+      $this->children,
+      function ($child) use ($id) {
+        return $child->getId() !== $id;
+      }
+    );
   }
 
   public function findChildById($id)
   {
-    $results = array_values(array_filter($this->children, function ($child) use ($id) {
-      return $child->getId() === $id;
-    }));
+    $results = array_values(
+      array_filter(
+        $this->children,
+        function ($child) use ($id) {
+          return $child->getId() == $id;
+        }
+      )
+    );
 
     return count($results) > 0 ? $results[0] : null;
   }
@@ -106,14 +114,12 @@ class MarkupContainer extends Component
 
   public function renderNext(Context $ctx, MarkupStream $stream)
   {
-
     $el = $stream->get();
 
     if ($el instanceof RawMarkup) {
-      
+
       $ctx->getResponse()->write($el->__toString());
       $stream->next();
-      
     } else if ($el->getId() !== null) {
 
       /** @var \zzui\markup\Component $component */
@@ -127,8 +133,6 @@ class MarkupContainer extends Component
 
       $component->handleComponentTag($ctx, $el);
       $component->render($ctx);
-
     }
-    
   }
 }
