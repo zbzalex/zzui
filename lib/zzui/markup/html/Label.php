@@ -7,6 +7,9 @@ use zzui\Context;
 use zzui\markup\MarkupElement;
 use zzui\markup\MarkupStream;
 
+/**
+ * @author zbzalex
+ */
 class Label extends Component
 {
   /**
@@ -46,7 +49,8 @@ class Label extends Component
   public function renderComponent(Context $ctx, MarkupStream $markupStream)
   {
     $openTag = $markupStream->get();
-    unset($openTag->attributes['view-id']);
+
+    // unset($openTag->attributes['view-id']);
 
     $markupStream->next();
     $markupStream->skipToMatchCloseTag($openTag);

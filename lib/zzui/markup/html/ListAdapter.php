@@ -8,6 +8,9 @@ use zzui\markup\Markup;
 use zzui\markup\MarkupContainer;
 use zzui\markup\MarkupStream;
 
+/**
+ * @author zbzalex
+ */
 class ListAdapter extends Component
 {
   protected $items;

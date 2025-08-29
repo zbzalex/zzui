@@ -4,6 +4,9 @@ namespace zzui\markup\html;
 
 use zzui\markup\Component;
 
+/**
+ * @author zbzalex
+ */
 abstract class FormComponentImpl extends Component implements FormComponent
 {
   /**

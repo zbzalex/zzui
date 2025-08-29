@@ -17,11 +17,13 @@ abstract class Panel extends MarkupContainer
 {
   public function handleRender(Context $ctx)
   {
-    $this->markupStream = $this->findMarkupStream();
 
+    // parent markup stream
+    $this->markupStream = $this->findMarkupStream();
+    
     $openTag = $this->markupStream->get();
     
-    unset($openTag->attributes['view-id']);
+    // unset($openTag->attributes['view-id']);
 
     $this->markupStream->next();
     $this->markupStream->skipToMatchCloseTag($openTag);
@@ -37,7 +39,10 @@ abstract class Panel extends MarkupContainer
 
     $ctx->getResponse()->write($openTag->__toString());
 
-    // $this->renderAll($ctx, $markupStream);
+    try {
+      // $this->renderAll($ctx, $markupStream);
+    } catch (\Exception $e) {
+    }
 
     $ctx->getResponse()->write($this->markupStream->get()->__toString());
     $this->markupStream->next();

@@ -5,6 +5,9 @@ namespace zzui\markup\html;
 use zzui\Context;
 use zzui\markup\MarkupElement;
 
+/**
+ * @author zbzalex
+ */
 class TextField extends FormComponentImpl
 {
   protected $defaultValue;
@@ -16,7 +19,7 @@ class TextField extends FormComponentImpl
     $this->defaultValue = $defaultValue;
     $this->validators = $validators;
   }
-
+  
   /**
    * @see \zzui\markup\Component::handleComponentTag()
    * 

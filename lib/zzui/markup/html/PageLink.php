@@ -48,7 +48,7 @@ class PageLink extends Component
   public function renderComponent(Context $ctx, MarkupStream $markupStream)
   {
     $openTag = $markupStream->get();
-    unset($openTag->attributes['view-id']);
+    // unset($openTag->attributes['view-id']);
 
     $this->handleComponentTag($ctx, $openTag);
 

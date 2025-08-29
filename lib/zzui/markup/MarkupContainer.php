@@ -98,7 +98,7 @@ class MarkupContainer extends Component
 
       if ($index === $stream->getCurrentIndex()) {
         throw new \Exception(
-          "markup stream index failed to advance"
+          "Infinity loop"
         );
       }
     }
@@ -110,17 +110,14 @@ class MarkupContainer extends Component
     $el = $stream->get();
 
     if ($el instanceof RawMarkup) {
-
+      
       $ctx->getResponse()->write($el->__toString());
       $stream->next();
       
     } else if ($el->getId() !== null) {
 
-      /** @var \zzui\markup\MarkupElement $componentTag */
-      $componentTag = $el;
-
       /** @var \zzui\markup\Component $component */
-      $component = $this->findChildById($componentTag->getId());
+      $component = $this->findChildById($el->getId());
 
       if ($component === null) {
         throw new \Exception(
@@ -128,7 +125,7 @@ class MarkupContainer extends Component
         );
       }
 
-      $component->handleComponentTag($ctx, $componentTag);
+      $component->handleComponentTag($ctx, $el);
       $component->render($ctx);
 
     }

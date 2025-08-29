@@ -2,6 +2,9 @@
 
 namespace zzui\markup\html;
 
+/**
+ * @author zbzalex
+ */
 interface FormComponent
 {
   /**

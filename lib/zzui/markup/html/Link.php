@@ -17,6 +17,12 @@ class Link extends Component implements LinkListener
 {
   protected $onClickHandler;
 
+  /**
+   * Constructor.
+   * 
+   * @param string $id
+   * @param mixed $onClickHandler
+   */
   public function __construct($id, $onClickHandler)
   {
     parent::__construct($id);
@@ -56,7 +62,7 @@ class Link extends Component implements LinkListener
   public function renderComponent(Context $ctx, MarkupStream $markupStream)
   {
     $openTag = $markupStream->get();
-    unset($openTag->attributes['view-id']);
+    // unset($openTag->attributes['view-id']);
 
     $this->handleComponentTag($ctx, $openTag);
 
@@ -77,6 +83,5 @@ class Link extends Component implements LinkListener
 
     $ctx->getResponse()->write($markupStream->get()->__toString());
     $markupStream->next();
-    
   }
 }
