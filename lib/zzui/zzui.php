@@ -13,15 +13,14 @@ class zzui
     return '0.1.0';
   }
 
-  public static function run(Application $app)
+  public static function run(
+    Application $app
+  )
   {
     $request = HttpRequest::createFromGlobals();
     $response = new HttpResponse();
 
     $filterChain = new DefaultFilterChain();
-
-    $app->setup($request, $response, $filterChain);
-
     $filterChain->addFilter(new RequestProcessorFilter($app));
     $filterChain->doFilter($request, $response);
 

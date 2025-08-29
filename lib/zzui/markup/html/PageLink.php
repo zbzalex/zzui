@@ -5,6 +5,7 @@ namespace zzui\markup\html;
 use zzui\Context;
 use zzui\markup\Component;
 use zzui\ListenerRequestTarget;
+use zzui\markup\MarkupElement;
 use zzui\markup\MarkupStream;
 
 /**
@@ -47,6 +48,7 @@ class PageLink extends Component
   public function renderComponent(Context $ctx, MarkupStream $markupStream)
   {
     $openTag = $markupStream->get();
+    unset($openTag->attributes['view-id']);
 
     $this->handleComponentTag($ctx, $openTag);
 
@@ -64,8 +66,9 @@ class PageLink extends Component
     }
 
     $ctx->getResponse()->write($inner);
-    $ctx->getResponse()->write($markupStream->get()->__toString());
 
+    $ctx->getResponse()->write($markupStream->get()->__toString());
     $markupStream->next();
+    
   }
 }

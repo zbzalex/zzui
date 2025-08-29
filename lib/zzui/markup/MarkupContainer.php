@@ -81,22 +81,22 @@ class MarkupContainer extends Component
   }
 
   /**
-   * @see \zzui\Component::handleRender()
+   * @see \zzui\markup\Component::handleRender()
    */
-  public function handleRender(Context $app)
+  public function handleRender(Context $ctx)
   {
-    $this->renderAll($app, $this->markupStream);
+    $this->renderAll($ctx, $this->markupStream);
   }
 
-  public function renderAll(Context $ctx, MarkupStream $markupStream)
+  public function renderAll(Context $ctx, MarkupStream $stream)
   {
-    while ($markupStream->hasMore()) {
+    while ($stream->hasMore()) {
 
-      $index = $markupStream->getCurrentIndex();
+      $index = $stream->getCurrentIndex();
 
-      $this->renderNext($ctx, $markupStream);
+      $this->renderNext($ctx, $stream);
 
-      if ($index === $markupStream->getCurrentIndex()) {
+      if ($index === $stream->getCurrentIndex()) {
         throw new \Exception(
           "markup stream index failed to advance"
         );
@@ -104,30 +104,34 @@ class MarkupContainer extends Component
     }
   }
 
-  public function renderNext(Context $ctx, MarkupStream $markupStream)
+  public function renderNext(Context $ctx, MarkupStream $stream)
   {
-    $el = $markupStream->get();
 
-    if ($el->getId() !== null) {
+    $el = $stream->get();
 
-      /** @var \zzui\markup\ComponentTag $componentTag */
+    if ($el instanceof RawMarkup) {
+
+      $ctx->getResponse()->write($el->__toString());
+      $stream->next();
+      
+    } else if ($el->getId() !== null) {
+
+      /** @var \zzui\markup\MarkupElement $componentTag */
       $componentTag = $el;
 
       /** @var \zzui\markup\Component $component */
-      $component = $this->findChildById($componentTag->id);
+      $component = $this->findChildById($componentTag->getId());
+
       if ($component === null) {
-        throw new \Exception("Could not found component");
+        throw new \Exception(
+          "Expected component"
+        );
       }
 
       $component->handleComponentTag($ctx, $componentTag);
       $component->render($ctx);
-      
-    } else if ($el instanceof RawMarkup) {
 
-      $ctx->getResponse()->write($el->__toString());
-
-      $markupStream->next();
-      
     }
+    
   }
 }

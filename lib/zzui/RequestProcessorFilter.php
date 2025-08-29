@@ -11,59 +11,57 @@ use zzui\pages\ErrorPage;
 
 class RequestProcessorFilter implements Filter
 {
-    protected $app;
+  protected $app;
 
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
+  public function __construct(Application $app)
+  {
+    $this->app = $app;
+  }
 
-    public function doFilter(
-        HttpRequest $request,
-        HttpResponse $response,
-        FilterChain $filterChain
-    ) {
-        $this->app->setRequest($request);
-        $this->app->setResponse($response);
+  public function doFilter(HttpRequest $request, HttpResponse $response, FilterChain $filterChain)
+  {
+    $this->app->setRequest($request);
+    $this->app->setResponse($response);
 
-        $requestTarget = null;
+    $requestTarget = null;
 
-        try {
-            $requestTarget = $this->app->getUrlCoder()->decode($request);
-            if ($requestTarget == null) {
-                $requestTarget = new ListenerRequestTarget($this->app->getHomePage(), null, null);
-            }
+    try {
+      $requestTarget = $this->app->getUrlCoder()->decode($request);
+      if ($requestTarget == null) {
+        $requestTarget = new ListenerRequestTarget($this->app->getHomePage(), null, null);
+      }
 
-            $this->app->setRequestTarget($requestTarget);
+      $this->app->setRequestTarget($requestTarget);
 
-            $pageFactory = $this->app->getPageFactory();
+      $pageFactory = $this->app->getPageFactory();
 
-            if ($requestTarget instanceof ListenerRequestTarget) {
-                $page = $pageFactory->newPage($requestTarget->getPageClass(), $requestTarget->getParams());
+      if ($requestTarget instanceof ListenerRequestTarget) {
+        $page = $pageFactory->newPage($requestTarget->getPageClass(), $requestTarget->getParams());
 
-                if ($page === null) {
-                    throw new PageNotFoundException();
-                }
-
-                $this->app->setResponsePage($page);
-
-                if ($requestTarget instanceof EventTarget) {
-                    $requestTarget->processEvents($this->app, $page);
-                }
-            }
-        } catch (UnauthorizedException $e) {
-        } catch (PageNotFoundException $e) {
-            $this->app->setResponsePage($pageFactory->newPage(NotFoundPage::class));
-        } catch (\Exception $e) {
-            $this->app->setResponsePage($pageFactory->newPage(ErrorPage::class));
+        if ($page === null) {
+          throw new PageNotFoundException();
         }
 
-        try {
-            $this->app->getRequestTarget()->respond($this->app);
-            $filterChain->doFilter($request, $response);
-        } catch (\Exception $e) {
+        $this->app->setResponsePage($page);
 
-            var_dump($e->getMessage());
+        if ($requestTarget instanceof EventTarget) {
+            $requestTarget->processEvents($this->app, $page);
         }
+      }
+    } catch (PageNotFoundException $e) {
+      $this->app->setResponsePage($pageFactory->newPage(NotFoundPage::class));
+    } catch (\Exception $e) {
+      $this->app->setResponsePage($pageFactory->newPage(ErrorPage::class));
     }
+
+    try {
+      $this
+        ->app
+        ->getRequestTarget()
+        ->respond($this->app);
+
+      $filterChain->doFilter($request, $response);
+    } catch (\Exception $e) {
+    }
+  }
 }

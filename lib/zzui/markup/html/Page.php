@@ -3,8 +3,8 @@
 namespace zzui\markup\html;
 
 use zzui\Context;
+use zzui\markup\Markup;
 use zzui\markup\MarkupContainer;
-use zzui\markup\MarkupMerger;
 use zzui\markup\MarkupParser;
 use zzui\markup\MarkupStream;
 
@@ -62,7 +62,7 @@ abstract class Page extends MarkupContainer
       if ($markup === null) {
         $markup = MarkupParser::parse($content);
       } else {
-        $markup = MarkupMerger::merge(
+        $markup = Markup::merge(
           MarkupParser::parse($content),
           $markup
         );

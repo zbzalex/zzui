@@ -56,12 +56,12 @@ class Link extends Component implements LinkListener
   public function renderComponent(Context $ctx, MarkupStream $markupStream)
   {
     $openTag = $markupStream->get();
+    unset($openTag->attributes['view-id']);
 
     $this->handleComponentTag($ctx, $openTag);
 
     $markupStream->next();
 
-    // render tag
     $ctx->getResponse()->write($openTag->__toString());
 
     $inner = null;
@@ -75,8 +75,8 @@ class Link extends Component implements LinkListener
 
     $ctx->getResponse()->write($inner);
 
-    // render close tag
     $ctx->getResponse()->write($markupStream->get()->__toString());
     $markupStream->next();
+    
   }
 }

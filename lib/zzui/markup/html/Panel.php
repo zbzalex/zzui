@@ -20,34 +20,27 @@ abstract class Panel extends MarkupContainer
     $this->markupStream = $this->findMarkupStream();
 
     $openTag = $this->markupStream->get();
-    $ctx->getResponse()->write($openTag->__toString());
+    
+    unset($openTag->attributes['view-id']);
 
     $this->markupStream->next();
-    // $this->markupStream->skipRawMarkup();
+    $this->markupStream->skipToMatchCloseTag($openTag);
 
-    while (
-      $this->markupStream->hasMore()
-      && !$this->markupStream->get()->closes($openTag)
-    ) {
-      $this->markupStream->next();
-    }
+
 
 
     $markupResource = $this->getMarkupResource();
 
     $html = $ctx->getResourceManager()->load($markupResource);
-    $elements = MarkupParser::parse($html);
-    $markup = new Markup($elements);
+    $markup = MarkupParser::parse($html);
     $markupStream = new MarkupStream($markup);
 
+    $ctx->getResponse()->write($openTag->__toString());
 
-    $this->renderAll($ctx, $markupStream);
-
-
-
+    // $this->renderAll($ctx, $markupStream);
 
     $ctx->getResponse()->write($this->markupStream->get()->__toString());
-
     $this->markupStream->next();
+
   }
 }

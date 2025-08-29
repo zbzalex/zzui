@@ -4,9 +4,9 @@ namespace zzui\markup\html;
 
 use zzui\Context;
 use zzui\ListenerRequestTarget;
-use zzui\markup\ComponentTag;
 use zzui\markup\html\FormListener;
 use zzui\markup\MarkupContainer;
+use zzui\markup\MarkupElement;
 
 class Form extends MarkupContainer implements FormListener
 {
@@ -74,8 +74,6 @@ class Form extends MarkupContainer implements FormListener
 
   public function handleRender(Context $ctx)
   {
-    // echo sprintf("%s::handleRender()\n", get_class($this));
-
     $this->markupStream = $this->findMarkupStream();
 
     $openTag = $this->markupStream->get();
@@ -115,7 +113,7 @@ class Form extends MarkupContainer implements FormListener
     $tag->attributes['action'] = $ctx->getUrlCoder()->encode(
       new ListenerRequestTarget(
         is_array($responsePage) ? $responsePage[0] : get_class($responsePage),
-        $tag->id,
+        $tag->getId(),
         '\\zzui\markup\\html\\FormListener',
         []
       )

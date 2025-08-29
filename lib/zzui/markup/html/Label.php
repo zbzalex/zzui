@@ -4,7 +4,7 @@ namespace zzui\markup\html;
 
 use zzui\markup\Component;
 use zzui\Context;
-use zzui\markup\ComponentTag;
+use zzui\markup\MarkupElement;
 use zzui\markup\MarkupStream;
 
 class Label extends Component
@@ -38,7 +38,7 @@ class Label extends Component
   /**
    * @see \zzui\markup\Component::handleComponentTag()
    */
-  public function handleComponentTag(Context $ctx, ComponentTag $tag)
+  public function handleComponentTag(Context $ctx, MarkupElement $tag)
   {
     parent::handleComponentTag($ctx, $tag);
   }
@@ -46,10 +46,10 @@ class Label extends Component
   public function renderComponent(Context $ctx, MarkupStream $markupStream)
   {
     $openTag = $markupStream->get();
+    unset($openTag->attributes['view-id']);
 
     $markupStream->next();
-
-    while ($markupStream->hasMore() && !$markupStream->get()->closes($openTag)) $markupStream->next();
+    $markupStream->skipToMatchCloseTag($openTag);
 
     $ctx->getResponse()->write($openTag->__toString());
     $ctx->getResponse()->write($this->value);

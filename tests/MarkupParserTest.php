@@ -49,11 +49,11 @@ class MarkupParserTest extends TestCase
       } else {
         switch ($tag->type) {
           case 'open':
+            
             $stream->next(); // skip opening tag
-
             $stream->skipToMatchCloseTag($tag);
-
             $stream->next(); // skip closing tag
+
             break;
           case 'open_close':
 
@@ -62,6 +62,7 @@ class MarkupParserTest extends TestCase
             }
 
             $stream->next();
+
             break;
         }
       }

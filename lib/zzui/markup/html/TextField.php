@@ -3,6 +3,7 @@
 namespace zzui\markup\html;
 
 use zzui\Context;
+use zzui\markup\MarkupElement;
 
 class TextField extends FormComponentImpl
 {
@@ -30,12 +31,11 @@ class TextField extends FormComponentImpl
 
   public function handleRender(Context $ctx)
   {
-    $markupStream = $this->findMarkupStream();
+    $stream = $this->findMarkupStream();
 
-    $tag = $markupStream->get();
+    $openTag = $stream->get();
+    $stream->next();
 
-    $markupStream->next();
-
-    $ctx->getResponse()->write($tag->__toString());
+    $ctx->getResponse()->write($openTag->__toString());
   }
 }
