@@ -115,22 +115,21 @@ class MarkupParser
     }
 
     $tag->name = $matches[1];
-    $attributesString = trim($matches[2]);
     $attributes = [];
 
     preg_match_all(
       '/([a-z_\-@][a-z0-9_\-]+)(?:\s*=\s*(["\'])(.*?)\2)?/',
-      $attributesString,
-      $attrMatches,
+      trim($matches[2]),
+      $matches2,
       PREG_SET_ORDER
     );
 
-    foreach ($attrMatches as $attr) {
+    foreach ($matches2 as $attr) {
       $key = $attr[1];
       $value = isset($attr[3]) ? $attr[3] : null;
       $attributes[$key] = $value;
     }
-    
+
     $tag->attributes = $attributes;
 
     return $tag;
