@@ -107,8 +107,10 @@ class MarkupParser
   {
     $tag = new MarkupElement();
 
+    $matches = [];
+
     preg_match('/^([^\s]+)(.*)$/s', $tagText, $matches);
-    if (!$matches) {
+    if (! $matches || count($matches) === 0) {
       return null;
     }
 
@@ -116,15 +118,19 @@ class MarkupParser
     $attributesString = trim($matches[2]);
     $attributes = [];
 
-    preg_match_all('/([a-z0-9_\-]+)(?:\s*=\s*(["\'])(.*?)\2)?/', $attributesString, $attrMatches, PREG_SET_ORDER);
+    preg_match_all(
+      '/([a-z_\-@][a-z0-9_\-]+)(?:\s*=\s*(["\'])(.*?)\2)?/',
+      $attributesString,
+      $attrMatches,
+      PREG_SET_ORDER
+    );
 
     foreach ($attrMatches as $attr) {
       $key = $attr[1];
       $value = isset($attr[3]) ? $attr[3] : null;
       $attributes[$key] = $value;
     }
-
-    // $tag->id = isset($attributes['view-id']) ? $attributes['view-id'] : null;
+    
     $tag->attributes = $attributes;
 
     return $tag;
@@ -158,7 +164,7 @@ class MarkupParser
       if ($tag->type === 'open') {
         $tags[] = $tag;
 
-        $addTag = isset($tag->attributes['view-id']);
+        $addTag = isset($tag->attributes['@id']);
       } else if ($tag->type === 'close') {
 
         if (count($tags) === 0) {
@@ -186,10 +192,10 @@ class MarkupParser
         }
 
         $tag->closes = $top;
-        $addTag = isset($top->attributes['view-id']);
+        $addTag = isset($top->attributes['@id']);
       } else if ($tag->type === 'open_close') {
         $tag->closes = $tag;
-        $addTag = isset($tag->attributes['view-id']) || $tag->name === 'children';
+        $addTag = isset($tag->attributes['@id']) || $tag->name === 'children';
       }
 
       if ($addTag !== false) {
@@ -228,7 +234,7 @@ class MarkupParser
   public static function getInstance()
   {
     if (MarkupParser::$instance === null) {
-        MarkupParser::$instance = new MarkupParser();
+      MarkupParser::$instance = new MarkupParser();
     }
 
     return MarkupParser::$instance;

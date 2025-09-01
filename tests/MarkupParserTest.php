@@ -16,7 +16,7 @@ class MarkupParserTest extends TestCase
         <head><title>hello</title>
         </head><body>
 
-        <div view-id=\"header\">[header placeholder]</div>
+        <div @id=\"header\">[header placeholder]</div>
         
         <children />
 

@@ -43,7 +43,7 @@ class MarkupElement
    * @var int
    */
   public $len = 0;
-  
+
   public function __construct() {}
 
   public function closes(MarkupElement $openTag)
@@ -109,6 +109,8 @@ class MarkupElement
 
   public function getId()
   {
-    return isset($this->attributes['view-id']) ? $this->attributes['view-id'] : null;
+    return isset($this->attributes['@id'])
+      ? $this->attributes['@id']
+      : null;
   }
 }
